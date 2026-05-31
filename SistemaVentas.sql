@@ -218,3 +218,21 @@ INSERT INTO Linea_Venta(cantidad, precio_unitario, id_venta, id_producto)
 VALUES(1, 9.90, 10, 5);
 
 -- 
+
+-- Ejercicio 4
+-- Cambio de nombre de producto con id_producto = 1
+UPDATE Producto
+SET descripcion = 'Pizza Familiar Americana Especial'
+WHERE id_producto = 1;
+
+-- Ejercicio 5
+-- Incremento de precios en 15%
+UPDATE Producto
+SET precio = precio * 1.15
+WHERE id_producto > 0;
+
+-- Ejercicio 6
+-- Reasignación de vendedor con id_vendedor = 1
+UPDATE Vendedor
+SET id_tienda = 5 -- Reasignación de tienda 8 a 5
+WHERE id_vendedor = 1;
