@@ -1,4 +1,3 @@
--- Crear la base de datos
 CREATE DATABASE Universidad;
 USE Universidad;
 
@@ -17,6 +16,7 @@ CREATE TABLE Alumno (
     id_alumno INT AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
+    correo_electronico VARCHAR(100) NOT NULL UNIQUE,
     -- Integridad de Dominio / Usuario (los créditos no pueden ser negativos)
     creditos_disponibles INT DEFAULT 0 CHECK (creditos_disponibles >= 0),
     PRIMARY KEY (id_alumno)
@@ -57,3 +57,59 @@ CREATE TABLE Matricula (
         REFERENCES Curso(id_curso)
         ON DELETE CASCADE
 );
+
+-- 1.Inserción de datos validos
+INSERT INTO Profesor (nombre, apellido, especialidad)
+VALUES ('Alan', 'Turing', 'Computación');
+INSERT INTO Profesor (nombre, apellido, especialidad) 
+VALUES ('Andrés', 'Silva', 'Ciberseguridad y Redes');
+INSERT INTO Alumno (nombre, apellido, correo_electronico, creditos_disponibles)
+VALUES ('Ada', 'Lovelace',  'ada.l@unmsm.edu.pe', 8);
+INSERT INTO Alumno (nombre, apellido, correo_electronico, creditos_disponibles) 
+VALUES ('Mateo', 'Quispe', 'mateo.q@unmsm.edu.pe',10);
+INSERT INTO Curso (nombre_curso, creditos, docente)
+VALUES ('Algoritmos 1', 5, 1);
+INSERT INTO Curso (nombre_curso, creditos, docente) 
+VALUES ('Seguridad en Redes y Sistemas', 4, 2);
+INSERT INTO Matricula (estudiante, curso, fecha_matricula)
+VALUES (2, 1, '2026-03-15 08:30:00');
+INSERT INTO Matricula (estudiante, curso, fecha_matricula)
+VALUES (1, 2, '2026-03-15 08:45:00');
+
+-- 2. Forzamiento de errores
+/**
+-- a. Error de Integridad Referencial
+-- Intentar matricular a un alumno en un curso que NO existe (id_curso = 99)
+INSERT INTO Matricula (id_alumno, id_curso) 
+VALUES (1, 99);
+-- b. Error de Dominio (CHECK)
+-- Insertar un curso con créditos negativos
+INSERT INTO Curso (nombre_curso, creditos, docente) 
+VALUES ('Metodos Numericos', -10, 1);
+-- Insertar un alumno con creditos disponibles negativos
+INSERT INTO Alumno (nombre, apellido, correo_electronico, creditos_disponibles) 
+VALUES ('Estudiante', 'Deudor','deudor@unmsm.edu.pe',  -5);
+-- c. Error de Unicidad (UNIQUE)
+INSERT INTO Alumno (nombre, apellido, correo_electronico, creditos_disponibles) 
+VALUES ('Ada', 'Lara', 'ada.l@unmsm.edu.pe', 15);
+*/
+-- 3.Comportamiento ante borrado
+-- 3.1 Probamos la configuracion ON DELETE SET NULL 
+DELETE FROM Profesor WHERE id_profesor = 1;
+-- Consultamos el curso
+SELECT * FROM Curso;
+-- 3.2 Se prueba la configuración ON DELETE CASCADE
+DELETE FROM Curso WHERE id_curso = 1;
+SELECT*FROM Matricula;
+
+-- 4.Agregamos más registros a la tabla Profesores
+INSERT INTO Profesor(nombre, apellido, especialidad)
+VALUES('Carlos', 'Mendoza', 'Inteligencia Artificial');
+INSERT INTO Profesor(nombre, apellido, especialidad)
+VALUES('Ana', 'Guzmán', 'Ciberseguridad');
+INSERT INTO Profesor(nombre, apellido, especialidad)
+VALUES('Luis', 'Rodríguez', 'Arquitectura de Software');
+INSERT INTO Profesor(nombre, apellido, especialidad)
+VALUES('Elena', 'Vargas', 'Ciencia de Datos');
+INSERT INTO Profesor(nombre, apellido, especialidad)
+VALUES('Roberto', 'Silva', 'Redes y Telecomunicaciones');
