@@ -113,3 +113,73 @@ INSERT INTO Profesor(nombre, apellido, especialidad)
 VALUES('Elena', 'Vargas', 'Ciencia de Datos');
 INSERT INTO Profesor(nombre, apellido, especialidad)
 VALUES('Roberto', 'Silva', 'Redes y Telecomunicaciones');
+
+--
+
+-- 5. Agregar nuevos alumnos
+-- Se registran nuevos alumnos en la tabla Alumno.
+INSERT INTO Alumno(nombre, apellido, correo_electronico, creditos_disponibles)
+VALUES('Pablo', 'Lovera', 'plovera@unmsm.edu.pe', 12);
+
+INSERT INTO Alumno(nombre, apellido, correo_electronico, creditos_disponibles)
+VALUES('Raul', 'Espinoza', 'respinoza@unmsm.edu.pe', 15);
+
+INSERT INTO Alumno(nombre, apellido, correo_electronico, creditos_disponibles)
+VALUES('Maria', 'Trujillo', 'mtrujillo@unmsm.edu.pe', 10);
+
+INSERT INTO Alumno(nombre, apellido, correo_electronico, creditos_disponibles)
+VALUES('Karen', 'Mamani', 'kmamani@unmsm.edu.pe', 8);
+
+-- Verificar alumnos registrados
+SELECT * FROM Alumno;
+
+
+-- 6. Agregar nuevos cursos
+-- Se crean cursos y se asignan a profesores.
+INSERT INTO Curso(nombre_curso, creditos, docente)
+VALUES('Base de Datos', 4, 3);
+
+INSERT INTO Curso(nombre_curso, creditos, docente)
+VALUES('Inteligencia Artificial', 4, 3);
+
+INSERT INTO Curso(nombre_curso, creditos, docente)
+VALUES('Arquitectura de Software', 3, 5);
+
+INSERT INTO Curso(nombre_curso, creditos, docente)
+VALUES('Ciencia de Datos', 4, 6);
+
+-- Verificar cursos registrados
+SELECT * FROM Curso;
+
+
+-- 7. Registrar matrículas
+-- Se relacionan los alumnos con los cursos.
+INSERT INTO Matricula(estudiante, curso)
+VALUES(3,3);
+
+INSERT INTO Matricula(estudiante, curso)
+VALUES(4,4);
+
+INSERT INTO Matricula(estudiante, curso)
+VALUES(5,5);
+
+INSERT INTO Matricula(estudiante, curso)
+VALUES(6,6);
+
+-- Verificar matrículas registradas
+SELECT * FROM Matricula;
+
+
+-- 8. INNER JOIN
+-- Muestra qué alumnos están matriculados en cada curso.
+SELECT
+    c.nombre_curso AS Curso,
+    a.nombre AS Nombre_Alumno,
+    a.apellido AS Apellido_Alumno,
+    m.fecha_matricula
+FROM Matricula m
+INNER JOIN Alumno a
+    ON m.estudiante = a.id_alumno
+INNER JOIN Curso c
+    ON m.curso = c.id_curso
+ORDER BY c.nombre_curso;
