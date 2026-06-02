@@ -183,3 +183,36 @@ INNER JOIN Alumno a
 INNER JOIN Curso c
     ON m.curso = c.id_curso
 ORDER BY c.nombre_curso;
+
+-- 9. Reporte General: Alumno, Curso y Profesor
+-- Muestra qué alumno está en qué curso y quién lo dicta
+SELECT
+    a.nombre AS Alumno,
+    c.nombre_curso AS Curso,
+    CONCAT(p.nombre, ' ', p.apellido) AS Profesor
+FROM Alumno a
+JOIN Matricula m ON a.id_alumno = m.estudiante
+JOIN Curso c ON m.curso = c.id_curso
+LEFT JOIN Profesor p ON c.docente = p.id_profesor;
+
+-- 10. Conteo de Alumnos por Curso
+-- Muestra cuántos alumnos tiene cada curso
+SELECT
+    c.nombre_curso,
+    COUNT(m.estudiante) AS total_inscritos
+FROM Curso c
+LEFT JOIN Matricula m ON c.id_curso = m.curso
+GROUP BY c.id_curso, c.nombre_curso
+HAVING total_inscritos > 0;
+
+-- 11. Carga Académica de los Profesores
+-- Muestra cuántos cursos dicta cada profesor
+-- y la suma total de créditos que tiene a su cargo.
+SELECT
+    p.nombre,
+    p.apellido,
+    COUNT(c.id_curso) AS cantidad_cursos,
+    SUM(c.creditos) AS total_creditos
+FROM Profesor p
+JOIN Curso c ON p.id_profesor = c.docente
+GROUP BY p.id_profesor, p.nombre, p.apellido;
