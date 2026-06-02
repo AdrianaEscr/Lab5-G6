@@ -291,3 +291,23 @@ JOIN Vendedor ven ON t.id_tienda = ven.id_tienda
 JOIN Venta v ON ven.id_vendedor = v.id_vendedor
 GROUP BY t.id_tienda, t.nombre
 ORDER BY Total_Vendido DESC;
+
+-- Ejercicio 13
+/**
+Realiza una consulta que muestre el id de la venta, nombre del cliente, nombre del vendedor,
+descripción de los productos comprados, cantidad, precio unitario y subtotal por producto (cantidad *
+precio unitario)
+*/
+SELECT 
+	v.id_venta AS 'ID Venta',
+    c.nombre AS 'Cliente',
+    vd.nombre AS 'Vendedor',
+    p.descripcion AS 'Producto',
+    lv.cantidad AS 'Cantidad',
+    lv.precio_unitario AS 'P.U.',
+    (lv.cantidad*lv.precio_unitario) AS Subtotal
+FROM Linea_Venta lv
+INNER JOIN Venta v ON lv.id_venta = v.id_venta
+INNER JOIN Cliente c ON v.id_cliente = c.id_cliente
+INNER JOIN Vendedor vd ON v.id_vendedor = vd.id_vendedor
+INNER JOIN Producto p ON lv.id_producto = p.id_producto;
