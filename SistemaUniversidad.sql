@@ -155,7 +155,7 @@ SELECT * FROM Curso;
 -- 7. Registrar matrículas
 -- Se relacionan los alumnos con los cursos.
 INSERT INTO Matricula(estudiante, curso)
-VALUES(3,3);
+VALUES(2,3);
 
 INSERT INTO Matricula(estudiante, curso)
 VALUES(4,4);
@@ -233,3 +233,26 @@ JOIN Alumno a ON m.estudiante = a.id_alumno
 JOIN Curso c ON m.curso = c.id_curso
 WHERE m.fecha_matricula >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
 ORDER BY m.fecha_matricula DESC;
+
+-- 15. Los "Top Profesores" (Por volumen de alumnos)
+SELECT
+	p.nombre AS Profesor,
+	p.apellido,
+	COUNT(m.estudiante) AS total_alumnos
+FROM Profesor p
+INNER JOIN Curso c ON p.id_profesor = c.docente
+INNER JOIN Matricula m ON c.id_curso = m.curso
+GROUP BY p.id_profesor, p.nombre, p.apellido
+ORDER BY total_alumnos DESC;
+
+-- 16. Reporte de Cursos Vacíos
+INSERT INTO Curso(nombre_curso, creditos, docente)
+VALUES('Analisis de SI', 3, 2);
+
+SELECT
+	c.nombre_curso AS 'Curso',
+	CONCAT(p.nombre,' ',p.apellido) AS 'Profesor Asignado'
+FROM Curso c
+LEFT JOIN Matricula m ON c.id_curso = m.curso
+LEFT JOIN Profesor p ON c.docente = p.id_profesor
+WHERE m.id_matricula IS NULL;
