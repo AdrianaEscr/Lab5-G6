@@ -263,3 +263,31 @@ SELECT
 FROM Tienda t
 JOIN Vendedor v ON t.id_tienda = v.id_tienda
 ORDER BY t.nombre;
+
+-- Ejercicio 10
+-- Mostrar las ventas cuyo monto total sean mayores a 500 soles.
+SELECT 
+    id_venta, 
+    fecha, 
+    monto_total
+FROM Venta
+WHERE monto_total > 500;
+
+-- Ejercicio 11
+-- Mostrar el total de todas las ventas
+-- Uso de función de agregación SUM para obtener los ingresos brutos
+SELECT 
+    SUM(monto_total) AS Total_Ingresos_Empresa
+FROM Venta;
+
+-- Ejercicio 12
+-- Mostrar el total de las ventas por tienda
+-- Se requiere cruzar Tienda -> Vendedor -> Venta para agrupar los montos
+SELECT 
+    t.nombre AS Tienda, 
+    SUM(v.monto_total) AS Total_Vendido
+FROM Tienda t
+JOIN Vendedor ven ON t.id_tienda = ven.id_tienda
+JOIN Venta v ON ven.id_vendedor = v.id_vendedor
+GROUP BY t.id_tienda, t.nombre
+ORDER BY Total_Vendido DESC;

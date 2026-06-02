@@ -216,3 +216,20 @@ SELECT
 FROM Profesor p
 JOIN Curso c ON p.id_profesor = c.docente
 GROUP BY p.id_profesor, p.nombre, p.apellido;
+
+-- 12. Búsqueda de Alumnos "Fantasmas" (Subconsultas)
+SELECT nombre, apellido, correo_electronico
+FROM Alumno
+WHERE id_alumno NOT IN (SELECT estudiante FROM Matricula);
+
+-- 14. Alumnos inscritos en el último mes
+SELECT
+    a.nombre,
+    a.apellido,
+    c.nombre_curso,
+    m.fecha_matricula
+FROM Matricula m
+JOIN Alumno a ON m.estudiante = a.id_alumno
+JOIN Curso c ON m.curso = c.id_curso
+WHERE m.fecha_matricula >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+ORDER BY m.fecha_matricula DESC;
