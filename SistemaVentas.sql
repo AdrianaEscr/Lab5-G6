@@ -236,3 +236,30 @@ WHERE id_producto > 0;
 UPDATE Vendedor
 SET id_tienda = 5 -- Reasignación de tienda 8 a 5
 WHERE id_vendedor = 1;
+
+-- Ejercicio 7
+-- Mostrar un listado de clientes y productos
+SELECT id_cliente, nombre, email, telefono
+FROM Cliente;
+
+SELECT id_producto, descripcion, precio
+FROM Producto;
+
+-- Ejercicio 8
+-- Mostrar los clientes que no tienen teléfono
+INSERT INTO Cliente (nombre, email)
+VALUES ('Cliente Sin Telefono', 'sintelefono@test.com');
+
+SELECT nombre, email
+FROM Cliente
+WHERE telefono IS NULL;
+
+-- Ejercicio 9
+-- Mostrar un listado con los nombres de tienda y los vendedores asignados
+SELECT
+    t.nombre AS Tienda,
+    v.nombre AS Vendedor,
+    v.puesto
+FROM Tienda t
+JOIN Vendedor v ON t.id_tienda = v.id_tienda
+ORDER BY t.nombre;
